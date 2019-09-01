@@ -1,5 +1,11 @@
-name: Validate and Build
-on: [push]
+name: build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
 jobs:
   validate:
     name: Validate
