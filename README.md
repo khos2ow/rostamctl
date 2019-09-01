@@ -1,4 +1,4 @@
-# rostamctl [![GoDoc](https://godoc.org/github.com/khos2ow/rostamctl?status.svg)](https://godoc.org/github.com/khos2ow/rostamctl) [![Go Report Card](https://goreportcard.com/badge/github.com/khos2ow/rostamctl)](https://goreportcard.com/report/github.com/khos2ow/rostamctl)
+# rostamctl [![Build Status](https://github.com/khos2ow/rostamctl/workflows/build/badge.svg)](https://github.com/khos2ow/rostamctl/actions) [![GoDoc](https://godoc.org/github.com/khos2ow/rostamctl?status.svg)](https://godoc.org/github.com/khos2ow/rostamctl) [![Go Report Card](https://goreportcard.com/badge/github.com/khos2ow/rostamctl)](https://goreportcard.com/report/github.com/khos2ow/rostamctl)
 
 rostamctl is a tool for interacting with [RostamBot](https://rostambot.com/) APIs via a command line interface.
 
