@@ -85,14 +85,14 @@ lint: ## Run linter
 	GO111MODULE=on golangci-lint run ./...
 
 .PHONY: fmt
-fmt: ## Format all go files
+fmt: ## Format go files
 	@ $(MAKE) --no-print-directory log-$@
 	goimports -w $(GOFILES)
 
 .PHONY: checkfmt
 checkfmt: RESULT = $(shell goimports -l $(GOFILES) | tee >(if [ "$$(wc -l)" = 0 ]; then echo "OK"; fi))
 checkfmt: SHELL := /usr/bin/env bash
-checkfmt: ## Check formatting of all go files
+checkfmt: ## Check formatting of go files
 	@ $(MAKE) --no-print-directory log-$@
 	@ echo "$(RESULT)"
 	@ if [ "$(RESULT)" != "OK" ]; then exit 1; fi
@@ -168,16 +168,20 @@ major: release ## Prepare Major release
 ####################
 ## Helper targets ##
 ####################
-.PHONY: goimports
-goimports: ## Install goimports
-	@ $(MAKE) --no-print-directory log-$@
+.PHONY: goimports golangci gox
+goimports:
 	GO111MODULE=off go get -u golang.org/x/tools/cmd/goimports
+
+golangci:
+	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell go env GOPATH)/bin $(GOLANGCI_VERSION)
+
+gox:
+	GO111MODULE=off go get -u github.com/mitchellh/gox
 
 .PHONY: tools
 tools: ## Install required tools
 	@ $(MAKE) --no-print-directory log-$@
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s  -- -b $(shell go env GOPATH)/bin $(GOLANGCI_VERSION)
-	GO111MODULE=off go get -u github.com/mitchellh/gox
+	@ $(MAKE) --no-print-directory goimports golangci gox
 
 ####################################
 ## Self-Documenting Makefile Help ##
