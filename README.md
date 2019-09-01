@@ -49,4 +49,4 @@ rostamctl completion zsh > /usr/local/share/zsh/site-functions/_rostamctl
 autoload -U compinit && compinit
 ```
 
-To make this change permenant, the above commands can be added to you `~/.profile`.
+To make this change permenant, the above commands can be added to your `~/.profile` file.
