@@ -3,7 +3,6 @@ name: Bug Report
 about: Report a bug encountered while working with rostamctl
 labels: bug
 ---
-<!-- For more information, see the [Contributing Guidelines](https://github.com/khos2ow/rostamctl/tree/master/CONTRIBUTING.md). -->
 ### Description
 
 Describe the issue.
@@ -34,5 +33,5 @@ Tell us which steps to take to replicate your problem.
 
 ### Environment
 
-- rostamctl version (use `rostamctl --version`):
+- Version (use `rostamctl --version`):
 - OS (e.g: `cat /etc/os-release`):

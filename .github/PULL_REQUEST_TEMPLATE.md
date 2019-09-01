@@ -1,7 +1,5 @@
 ### Prerequisites
 
-<!-- For more information, see the [Contributing Guide](https://github.com/khos2ow/rostamctl/tree/master/CONTRIBUTING.md). -->
-
 Put an `x` into the box(es) that apply:
 
 - [ ] This pull request fixes a bug.
@@ -11,11 +9,11 @@ Put an `x` into the box(es) that apply:
 
 ### Description
 
-<!-- Describe what this pull request achieves. -->
+Describe what this pull request achieves.
 
 ### Issues Resolved
 
-<!-- List any existing issues this pull request resolves. -->
+List any existing issues this pull request resolves.
 
 ### Checklist
 
