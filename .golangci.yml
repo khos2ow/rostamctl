@@ -1,0 +1,41 @@
+run:
+  deadline: 5m
+  tests: true
+
+linters:
+  disable-all: true
+  enable:
+    - govet
+    - golint
+    - goconst
+    - misspell
+    - lll
+    - varcheck
+    - structcheck
+    - staticcheck
+    - errcheck
+    - unconvert
+    - unused
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  golint:
+    min-confidence: 0
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  misspell:
+    locale: US
+  lll:
+    line-length: 170
+  unused:
+    check-exported: false
+
+issues:
+  exclude-rules:
+    - linters:
+        - golint
+      text: "should have a package comment"
+
+  exclude-use-default: false
