@@ -12,18 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package cli wraps around and holds the references to different part of rostamctl command
-package cli
+// Package rest TODO
+package rest
 
 import (
-	"github.com/khos2ow/rostamctl/pkg/flags"
-	"github.com/khos2ow/rostamctl/pkg/output"
-	"github.com/khos2ow/rostamctl/pkg/rest"
+	"github.com/go-resty/resty/v2"
 )
 
-// Wrapper of different parts of rostamctl
-type Wrapper struct {
-	GlobalFlags   *flags.GlobalFlags
-	OutputBuilder *output.Builder
-	RestRequest   *rest.Request
+// Client to interact with rostambot.com API
+type Client struct {
+	*resty.Client
 }
+
+// Request TOOD
+type Request struct {
+	*resty.Request
+}
+
+// NewClient returns a new client to interact with rostambot.com API
+func NewClient() *Client {
+	return &Client{
+		Client: resty.New(),
+	}
+}
+
+// NewRequest returns a new client to interact with rostambot.com API
+func NewRequest() *Request {
+	return &Request{
+		Request: NewClient().R(),
+	}
+}
+
+// func (r *Request) Get() {
+// 	return r.Get("")
+// }

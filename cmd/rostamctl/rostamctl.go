@@ -19,10 +19,12 @@ import (
 	"os"
 
 	"github.com/khos2ow/rostamctl/cmd/rostamctl/completion"
+	"github.com/khos2ow/rostamctl/cmd/rostamctl/twitter"
 	"github.com/khos2ow/rostamctl/cmd/rostamctl/version"
 	"github.com/khos2ow/rostamctl/pkg/cli"
 	"github.com/khos2ow/rostamctl/pkg/flags"
 	"github.com/khos2ow/rostamctl/pkg/output"
+	"github.com/khos2ow/rostamctl/pkg/rest"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	logutil "sigs.k8s.io/kind/pkg/log"
@@ -45,6 +47,7 @@ func NewCommand() *cobra.Command {
 			}
 			cli.GlobalFlags = flg
 			cli.OutputBuilder = output.NewBuilder(flg.OutputFormat, flg.OutputColored)
+			cli.RestRequest = rest.NewRequest()
 			return nil
 		},
 	}
@@ -54,6 +57,7 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&flg.LogLevel, "loglevel", flags.DefaultLogLevel.String(), "log level "+logutil.LevelsString())
 
 	cmd.AddCommand(completion.NewCommand(cli))
+	cmd.AddCommand(twitter.NewCommand(cli))
 	cmd.AddCommand(version.NewCommand(cli))
 
 	return cmd
