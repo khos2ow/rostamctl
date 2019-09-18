@@ -29,8 +29,8 @@ func NewCommand(cli *cli.Wrapper) *cobra.Command {
 		Args:    cobra.NoArgs,
 		Aliases: []string{"ls"},
 		Use:     "list",
-		Short:   "List suspicious accounts",
-		Long:    util.LongDescription(`List suspicious Twitter accounts.`),
+		Short:   "List blocked accounts",
+		Long:    util.LongDescription(`List blocked Twitter accounts.`),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			list, err := twitter.NewClient().List()
 			if err != nil {
