@@ -28,9 +28,7 @@ func NewCommand(cli *cli.Wrapper) *cobra.Command {
 		Args:  cobra.NoArgs,
 		Use:   "twitter",
 		Short: "Manage activity of Twitter accounts",
-		Long: util.LongDescription(`
-            Manage activity of Twitter accounts
-        `),
+		Long:  util.LongDescription(`Manage activity of Twitter accounts`),
 	}
 
 	cmd.AddCommand(list.NewCommand(cli))

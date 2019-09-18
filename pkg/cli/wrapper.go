@@ -18,12 +18,10 @@ package cli
 import (
 	"github.com/khos2ow/rostamctl/pkg/flags"
 	"github.com/khos2ow/rostamctl/pkg/output"
-	"github.com/khos2ow/rostamctl/pkg/rest"
 )
 
 // Wrapper of different parts of rostamctl
 type Wrapper struct {
 	GlobalFlags   *flags.GlobalFlags
 	OutputBuilder *output.Builder
-	RestRequest   *rest.Request
 }

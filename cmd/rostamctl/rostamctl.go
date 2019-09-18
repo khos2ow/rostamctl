@@ -24,7 +24,6 @@ import (
 	"github.com/khos2ow/rostamctl/pkg/cli"
 	"github.com/khos2ow/rostamctl/pkg/flags"
 	"github.com/khos2ow/rostamctl/pkg/output"
-	"github.com/khos2ow/rostamctl/pkg/rest"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	logutil "sigs.k8s.io/kind/pkg/log"
@@ -47,7 +46,6 @@ func NewCommand() *cobra.Command {
 			}
 			cli.GlobalFlags = flg
 			cli.OutputBuilder = output.NewBuilder(flg.OutputFormat, flg.OutputColored)
-			cli.RestRequest = rest.NewRequest()
 			return nil
 		},
 	}

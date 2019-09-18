@@ -16,25 +16,12 @@
 package list
 
 import (
-	"encoding/json"
-	"fmt"
-
+	"github.com/khos2ow/rostamctl/pkg/api/twitter"
 	"github.com/khos2ow/rostamctl/pkg/cli"
 	"github.com/khos2ow/rostamctl/pkg/output"
 	"github.com/khos2ow/rostamctl/pkg/util"
 	"github.com/spf13/cobra"
 )
-
-// TwitterResponse TODO
-type TwitterResponse struct {
-	Blocked []Account `json:"blockedAccounts"`
-}
-
-// Account TODO
-type Account struct {
-	ID   int64  `json:"twitterUserId" newtag:"id"`
-	Name string `json:"twitterScreenName" newtag:"name"`
-}
 
 // NewCommand returns a new cobra.Command for twitter list
 func NewCommand(cli *cli.Wrapper) *cobra.Command {
@@ -42,22 +29,15 @@ func NewCommand(cli *cli.Wrapper) *cobra.Command {
 		Args:    cobra.NoArgs,
 		Aliases: []string{"ls"},
 		Use:     "list",
-		Short:   "List blocked Twitter accounts",
-		Long: util.LongDescription(`
-            List blocked Twitter accounts.
-        `),
+		Short:   "List suspicious accounts",
+		Long:    util.LongDescription(`List suspicious Twitter accounts.`),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			body, err := cli.RestRequest.Get("https://rostambot.com/api/v1/twitter/list")
+			list, err := twitter.NewClient().List()
 			if err != nil {
 				return err
 			}
-
-			var response TwitterResponse
-			json.Unmarshal(body.Body(), &response)
-
 			return cli.OutputBuilder.Build(func(formatter *output.Formatter) error {
-				fmt.Println(response)
-				return formatter.Format(response)
+				return formatter.Format(list)
 			})
 		},
 	}

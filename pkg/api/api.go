@@ -12,37 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package rest TODO
-package rest
+// Package api contains the definition of API client used in rostamctl
+package api
 
-import (
-	"github.com/go-resty/resty/v2"
+// nolint
+const (
+	APIBaseURL = "https://rostambot.com/api/v1"
 )
 
-// Client to interact with rostambot.com API
-type Client struct {
-	*resty.Client
+// Account is a normalized representation of blocked accounts.
+type Account struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
 }
 
-// Request TOOD
-type Request struct {
-	*resty.Request
+// Client abstracts over different API Client implementations
+type Client interface {
+	Get(name string) (*Account, error)
+	List() ([]*Account, error)
 }
-
-// NewClient returns a new client to interact with rostambot.com API
-func NewClient() *Client {
-	return &Client{
-		Client: resty.New(),
-	}
-}
-
-// NewRequest returns a new client to interact with rostambot.com API
-func NewRequest() *Request {
-	return &Request{
-		Request: NewClient().R(),
-	}
-}
-
-// func (r *Request) Get() {
-// 	return r.Get("")
-// }
