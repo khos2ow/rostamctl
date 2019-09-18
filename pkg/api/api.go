@@ -22,12 +22,14 @@ const (
 
 // Account is a normalized representation of blocked accounts.
 type Account struct {
-	ID   int64  `json:"id"`
-	Name string `json:"name"`
+	ID      int64  `json:"id,omitempty"`
+	Name    string `json:"name,omitempty"`
+	Blocked bool   `json:"blocked"`
 }
 
 // Client abstracts over different API Client implementations
 type Client interface {
+	Check(name string) (*Account, error)
 	Get(name string) (*Account, error)
 	List() ([]*Account, error)
 }

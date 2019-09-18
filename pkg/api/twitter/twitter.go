@@ -18,6 +18,7 @@ package twitter
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	resty "github.com/go-resty/resty/v2"
 	"github.com/khos2ow/rostamctl/pkg/api"
@@ -47,6 +48,20 @@ func NewClient() api.Client {
 
 // Get returns a blocked Twitter account based on the provided
 // name, if found.
+func (t *twitter) Check(name string) (*api.Account, error) {
+	response, err := resty.New().R().Get(fmt.Sprintf("%s/check/%s", t.baseurl, name))
+	if err != nil {
+		return nil, err
+	}
+	value, _ := strconv.ParseBool(string(response.Body()))
+	account := &api.Account{
+		Blocked: value,
+	}
+	return account, nil
+}
+
+// Get returns a blocked Twitter account based on the provided
+// name, if found.
 func (t *twitter) Get(name string) (*api.Account, error) {
 	return nil, nil
 }
@@ -55,23 +70,31 @@ func (t *twitter) Get(name string) (*api.Account, error) {
 func (t *twitter) List() ([]*api.Account, error) {
 	list := []*api.Account{}
 
-	response, err := resty.New().R().Get(fmt.Sprintf("%s/list", t.baseurl))
+	data, err := t.listAll()
 	if err != nil {
-		return list, err
-	}
-
-	data := blocked{}
-	err = json.Unmarshal(response.Body(), &data)
-	if err != nil {
-		return list, err
+		return nil, err
 	}
 
 	for _, item := range data.Blocked {
 		list = append(list, &api.Account{
-			ID:   item.ID,
-			Name: item.Name,
+			ID:      item.ID,
+			Name:    item.Name,
+			Blocked: true,
 		})
 	}
 
 	return list, nil
+}
+
+func (t *twitter) listAll() (*blocked, error) {
+	response, err := resty.New().R().Get(fmt.Sprintf("%s/list", t.baseurl))
+	if err != nil {
+		return nil, err
+	}
+	data := &blocked{}
+	err = json.Unmarshal(response.Body(), &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }

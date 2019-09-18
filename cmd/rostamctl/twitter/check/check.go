@@ -12,28 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package twitter implements the `twitter` command
-package twitter
+// Package check implements the `twitter check` command
+package check
 
 import (
-	"github.com/khos2ow/rostamctl/cmd/rostamctl/twitter/check"
-	"github.com/khos2ow/rostamctl/cmd/rostamctl/twitter/list"
+	"github.com/khos2ow/rostamctl/pkg/api/twitter"
 	"github.com/khos2ow/rostamctl/pkg/cli"
+	"github.com/khos2ow/rostamctl/pkg/output"
 	"github.com/khos2ow/rostamctl/pkg/util"
 	"github.com/spf13/cobra"
 )
 
-// NewCommand returns a new cobra.Command for twitter actions
+// NewCommand returns a new cobra.Command for twitter check
 func NewCommand(cli *cli.Wrapper) *cobra.Command {
 	cmd := &cobra.Command{
-		Args:  cobra.NoArgs,
-		Use:   "twitter",
-		Short: "Manage activity of Twitter accounts",
-		Long:  util.LongDescription(`Manage activity of Twitter accounts`),
+		Args:  cobra.ExactArgs(1),
+		Use:   "check",
+		Short: "Check if an account is blocked",
+		Long:  util.LongDescription(`Check if an account is blocked`),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			status, err := twitter.NewClient().Check(args[0])
+			if err != nil {
+				return err
+			}
+			return cli.OutputBuilder.Build(func(formatter *output.Formatter) error {
+				return formatter.Format(status)
+			})
+		},
 	}
-
-	cmd.AddCommand(check.NewCommand(cli))
-	cmd.AddCommand(list.NewCommand(cli))
 
 	return cmd
 }
