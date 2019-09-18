@@ -19,6 +19,7 @@ import (
 	"os"
 
 	"github.com/khos2ow/rostamctl/cmd/rostamctl/completion"
+	"github.com/khos2ow/rostamctl/cmd/rostamctl/twitter"
 	"github.com/khos2ow/rostamctl/cmd/rostamctl/version"
 	"github.com/khos2ow/rostamctl/pkg/cli"
 	"github.com/khos2ow/rostamctl/pkg/flags"
@@ -54,6 +55,7 @@ func NewCommand() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&flg.LogLevel, "loglevel", flags.DefaultLogLevel.String(), "log level "+logutil.LevelsString())
 
 	cmd.AddCommand(completion.NewCommand(cli))
+	cmd.AddCommand(twitter.NewCommand(cli))
 	cmd.AddCommand(version.NewCommand(cli))
 
 	return cmd
