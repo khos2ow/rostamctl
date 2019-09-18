@@ -63,18 +63,37 @@ func (t *twitter) Check(name string) (*api.Account, error) {
 // Get returns a blocked Twitter account based on the provided
 // name, if found.
 func (t *twitter) Get(name string) (*api.Account, error) {
-	return nil, nil
-}
-
-// List returns list of blocked Twitter accounts
-func (t *twitter) List() ([]*api.Account, error) {
-	list := []*api.Account{}
-
 	data, err := t.listAll()
 	if err != nil {
 		return nil, err
 	}
 
+	for _, item := range data.Blocked {
+		if item.Name == name {
+			account := &api.Account{
+				ID:      item.ID,
+				Name:    item.Name,
+				Blocked: true,
+			}
+			return account, nil
+		}
+	}
+
+	account := &api.Account{
+		Name:    name,
+		Blocked: false,
+	}
+	return account, nil
+}
+
+// List returns list of blocked Twitter accounts
+func (t *twitter) List() ([]*api.Account, error) {
+	data, err := t.listAll()
+	if err != nil {
+		return nil, err
+	}
+
+	list := []*api.Account{}
 	for _, item := range data.Blocked {
 		list = append(list, &api.Account{
 			ID:      item.ID,
@@ -91,10 +110,12 @@ func (t *twitter) listAll() (*blocked, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	data := &blocked{}
 	err = json.Unmarshal(response.Body(), &data)
 	if err != nil {
 		return nil, err
 	}
+
 	return data, nil
 }
