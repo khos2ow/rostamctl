@@ -47,6 +47,7 @@ GOBUILD     ?= GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 $(GOCMD) build $(MODV
 GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) run $(MODVENDOR)
 
 # Binary versions
+GITCHGLOG_VERSION := 0.8.0
 GOLANGCI_VERSION  := v1.17.1
 
 .PHONY: default
@@ -168,7 +169,15 @@ major: release ## Prepare Major release
 ####################
 ## Helper targets ##
 ####################
-.PHONY: goimports golangci gox
+.PHONY: changelog
+changelog: ## Generate Changelog
+	@ git-chglog --config scripts/chglog/config-full-history.yml --output CHANGELOG.md
+
+.PHONY: tools git-chglog goimports golangci gox
+
+git-chglog:
+	curl -sfL https://github.com/git-chglog/git-chglog/releases/download/$(GITCHGLOG_VERSION)/git-chglog_$(shell go env GOOS)_$(shell go env GOARCH) -o $(shell go env GOPATH)/bin/git-chglog && chmod +x $(shell go env GOPATH)/bin/git-chglog
+
 goimports:
 	GO111MODULE=off go get -u golang.org/x/tools/cmd/goimports
 
@@ -178,10 +187,9 @@ golangci:
 gox:
 	GO111MODULE=off go get -u github.com/mitchellh/gox
 
-.PHONY: tools
 tools: ## Install required tools
 	@ $(MAKE) --no-print-directory log-$@
-	@ $(MAKE) --no-print-directory goimports golangci gox
+	@ $(MAKE) --no-print-directory git-chglog goimports golangci gox
 
 ####################################
 ## Self-Documenting Makefile Help ##
