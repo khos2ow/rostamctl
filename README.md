@@ -7,7 +7,7 @@ rostamctl is a tool for interacting with [RostamBot](https://rostambot.com/) API
 The latest version can be installed using `go get`:
 
 ``` bash
-GO111MODULE="on" go get github.com/khos2ow/rostamctl@v0.0.1
+GO111MODULE="on" go get github.com/khos2ow/rostamctl@v0.1.0
 ```
 
 **NOTE:** please use the latest go to do this, ideally go 1.12.9 or greater.
@@ -21,7 +21,7 @@ $(go env GOPATH)/src/github.com/khos2ow/rostamctl/bin/$(uname | tr '[:upper:]' '
 Stable binaries are also available on the [releases](https://github.com/khos2ow/rostamctl/releases) page. To install, download the binary for your platform from "Assets" and place this into your `$PATH`:
 
 ```bash
-curl -Lo ./rostamctl https://github.com/khos2ow/rostamctl/releases/download/v0.0.1/rostamctl-$(uname)-amd64
+curl -Lo ./rostamctl https://github.com/khos2ow/rostamctl/releases/download/v0.1.0/rostamctl-$(uname)-amd64
 chmod +x ./rostamctl
 mv ./rostamctl /some-dir-in-your-PATH/rostamctl
 ```
