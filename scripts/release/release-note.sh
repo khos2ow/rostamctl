@@ -23,6 +23,7 @@ CLOSEST_VERSION=$(git describe --tags --abbrev=0)
 
 # Install git-chglog binary
 make git-chglog
+export PATH=$PATH:$(go env GOPATH)/bin
 
 # Generate Changelog
 git-chglog ${CLOSEST_VERSION} --config ${PWD}/../../scripts/chglog/config-release-note.yml --output ${PWD}/../../CURRENT-RELEASE-CHANGELOG.md
