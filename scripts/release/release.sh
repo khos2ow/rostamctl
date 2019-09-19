@@ -53,17 +53,21 @@ sed -i -E 's|'${CLOSEST_VERSION}'|v'${NEW_VERSION}'|g' README.md
 sed -i -E 's|'${CLOSEST_VERSION}'-alpha|v'${NEW_VERSION}'|g' cmd/rostamctl/version/version.go
 
 # Commit changes
+printf "\033[36m==> %s\033[0m\n" "Commit changes for release version v${NEW_VERSION}"
 git add README.md cmd/rostamctl/version/version.go
 git commit -m "Release version v${NEW_VERSION}"
 
 if [ "${PUSH}" == "true" ]; then
+    printf "\033[36m==> %s\033[0m\n" "Push commits for v${NEW_VERSION}"
     git push origin master
 fi
 
 # Tag the release
+printf "\033[36m==> %s\033[0m\n" "Tag release v${NEW_VERSION}"
 git tag --annotate --message "v${NEW_VERSION} Release" "v${NEW_VERSION}"
 
 if [ "${PUSH}" == "true" ]; then
+    printf "\033[36m==> %s\033[0m\n" "Push tag release v${NEW_VERSION}"
     git push origin v${NEW_VERSION}
 fi
 
@@ -75,9 +79,11 @@ NEXT_VERSION=$(echo "${NEW_VERSION}" | sed 's/^v//' | awk -F'[ .]' '{print $1"."
 sed -i -E 's|'${NEW_VERSION}'|'${NEXT_VERSION}'-alpha|g' cmd/rostamctl/version/version.go
 
 # Commit changes
+printf "\033[36m==> %s\033[0m\n" "Bump version to ${NEXT_VERSION}-alpha"
 git add cmd/rostamctl/version/version.go
 git commit -m "Bump version to ${NEXT_VERSION}-alpha"
 
 if [ "${PUSH}" == "true" ]; then
+    printf "\033[36m==> %s\033[0m\n" "Push commits for ${NEXT_VERSION}-alpha"
     git push origin master
 fi
