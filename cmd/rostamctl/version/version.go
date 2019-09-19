@@ -26,7 +26,7 @@ import (
 )
 
 // current version
-const current = "v0.1.0"
+const current = "v0.2.0-alpha"
 
 // Provisioned by ldflags
 var (
