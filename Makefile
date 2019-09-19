@@ -38,9 +38,9 @@ GOPKGS      ?= $(shell $(GOCMD) list $(MODVENDOR) ./... | grep -v /vendor)
 GOFILES     ?= $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 GOLDFLAGS   :="
-GOLDFLAGS   += -X $(PACKAGE)/cmd/rostam/version.version=$(VERSION)
-GOLDFLAGS   += -X $(PACKAGE)/cmd/rostam/version.commitHash=$(COMMIT_HASH)
-GOLDFLAGS   += -X $(PACKAGE)/cmd/rostam/version.buildDate=$(BUILD_DATE)
+GOLDFLAGS   += -X $(PACKAGE)/cmd/rostamctl/version.version=$(VERSION)
+GOLDFLAGS   += -X $(PACKAGE)/cmd/rostamctl/version.commitHash=$(COMMIT_HASH)
+GOLDFLAGS   += -X $(PACKAGE)/cmd/rostamctl/version.buildDate=$(BUILD_DATE)
 GOLDFLAGS   +="
 
 GOBUILD     ?= GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 $(GOCMD) build $(MODVENDOR) -ldflags $(GOLDFLAGS)
@@ -144,18 +144,7 @@ release: version ?= $(shell echo $(VERSION) | sed 's/^v//' | awk -F'[ .]' '{prin
 release: push    ?= false
 release: ## Prepare release
 	@ $(MAKE) --no-print-directory log-$@
-	@ if [ -z "$(version)" ]; then								\
-		echo "Error: missing value for 'version'. e.g. 'make release version=x.y.z'" ;	\
-	elif [ "v$(version)" = "$(VERSION)" ] ; then						\
-		echo "Error: provided version (v$(version)) exists." ;				\
-	else											\
-		git tag --annotate --message "v$(version) Release" v$(version) ;		\
-		echo "Tag v$(version) Release" ;						\
-		if [ $(push) = "true" ]; then							\
-			git push origin v$(version) ;						\
-			echo "Push v$(version) Release" ;					\
-		fi										\
-	fi
+	@ ./scripts/release/release.sh "$(version)" "$(push)" "$(VERSION)" "1"
 
 patch: PATTERN = '\$$1\".\"\$$2\".\"\$$3+1'
 patch: release ## Prepare Patch release
@@ -174,11 +163,9 @@ changelog: push ?= false
 changelog: ## Generate Changelog
 	@ $(MAKE) --no-print-directory log-$@
 	git-chglog --config scripts/chglog/config-full-history.yml --output CHANGELOG.md
-	git add CHANGELOG.md
-	git commit -m "Update Changelog"
-	@ if [ $(push) = "true" ]; then	\
-		git push origin master;	\
-	fi				\
+	@ git add CHANGELOG.md
+	@ git commit -m "Update Changelog"
+	@ if $(push) = "true"; then git push origin master; fi
 
 .PHONY: tools git-chglog goimports golangci gox
 
