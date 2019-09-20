@@ -63,6 +63,14 @@ if [ "${PUSH}" == "true" ]; then
 fi
 
 # Tag the release
+git tag --annotate --message "v${NEW_VERSION} Release" "v${NEW_VERSION}"
+
+# Generate Changelog
+make --no-print-directory -f ${PWD}/../../Makefile changelog push="${PUSH}"
+
+git tag -d "v${NEW_VERSION}"
+
+# Tag the release
 printf "\033[36m==> %s\033[0m\n" "Tag release v${NEW_VERSION}"
 git tag --annotate --message "v${NEW_VERSION} Release" "v${NEW_VERSION}"
 
@@ -70,9 +78,6 @@ if [ "${PUSH}" == "true" ]; then
     printf "\033[36m==> %s\033[0m\n" "Push tag release v${NEW_VERSION}"
     git push origin v${NEW_VERSION}
 fi
-
-# Generate Changelog
-make --no-print-directory -f ${PWD}/../../Makefile changelog push="${PUSH}"
 
 # Bump the next version in version.go
 NEXT_VERSION=$(echo "${NEW_VERSION}" | sed 's/^v//' | awk -F'[ .]' '{print $1"."$2+1".0"}')
