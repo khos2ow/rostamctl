@@ -33,22 +33,21 @@ type account struct {
 	Name string `json:"twitterScreenName"`
 }
 
-// twitter is the implementation of api.Client for Twitter
+// Client is the implementation of api.Client for Twitter
 // API endpoint
-type twitter struct {
+type Client struct {
 	baseurl string
 }
 
 // NewClient returns a new API Client for Twitter endpoint
 func NewClient() api.Client {
-	return &twitter{
+	return &Client{
 		baseurl: fmt.Sprintf("%s/twitter", api.APIBaseURL),
 	}
 }
 
-// Get returns a blocked Twitter account based on the provided
-// name, if found.
-func (t *twitter) Check(name string) (*api.Account, error) {
+// Check returns status of a Twitter account, i.e. is blocked or not
+func (t *Client) Check(name string) (*api.Account, error) {
 	response, err := resty.New().R().Get(fmt.Sprintf("%s/check/%s", t.baseurl, name))
 	if err != nil {
 		return nil, err
@@ -61,8 +60,8 @@ func (t *twitter) Check(name string) (*api.Account, error) {
 }
 
 // Get returns a blocked Twitter account based on the provided
-// name, if found.
-func (t *twitter) Get(name string) (*api.Account, error) {
+// name, if found
+func (t *Client) Get(name string) (*api.Account, error) {
 	data, err := t.listAll()
 	if err != nil {
 		return nil, err
@@ -87,7 +86,7 @@ func (t *twitter) Get(name string) (*api.Account, error) {
 }
 
 // List returns list of blocked Twitter accounts
-func (t *twitter) List() ([]*api.Account, error) {
+func (t *Client) List() ([]*api.Account, error) {
 	data, err := t.listAll()
 	if err != nil {
 		return nil, err
@@ -105,7 +104,7 @@ func (t *twitter) List() ([]*api.Account, error) {
 	return list, nil
 }
 
-func (t *twitter) listAll() (*blocked, error) {
+func (t *Client) listAll() (*blocked, error) {
 	response, err := resty.New().R().Get(fmt.Sprintf("%s/list", t.baseurl))
 	if err != nil {
 		return nil, err
