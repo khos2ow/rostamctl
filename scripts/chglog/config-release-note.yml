@@ -7,14 +7,14 @@ options:
   commits:
     filters:
       Type:
-        - docs
+        - doc
         - feat
         - fix
         - perf
         - refactor
   commit_groups:
     title_maps:
-      docs: Documentation
+      doc: Documentation
       feat: Features
       fix: Bug Fixes
       perf: Performance Improvements
