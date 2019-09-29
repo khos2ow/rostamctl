@@ -17,6 +17,17 @@
 set -o errexit
 set -o pipefail
 
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ -z "${CURRENT_BRANCH}" -o "${CURRENT_BRANCH}" != "master" ]; then
+    echo "Error: The current branch is '${CURRENT_BRANCH}', switch to 'master' to do the release."
+    exit 1
+fi
+
+if [ -n "$(git status --short)" ]; then
+    echo "Error: There are untracked/modified changes, commit or discard them before the release."
+    exit 1
+fi
+
 NEW_VERSION=$1
 PUSH=$2
 CURRENT_VERSION=$3
