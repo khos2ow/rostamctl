@@ -3,6 +3,14 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Code Refactoring
+- Deprecate output-colored flag ([#12](https://github.com/khos2ow/rostamctl/issues/12))
+- Export 'twitter' client for better visibility ([#9](https://github.com/khos2ow/rostamctl/issues/9))
+
+### Enhancements
+- Better manage godoc comments ([#10](https://github.com/khos2ow/rostamctl/issues/10))
+- Generate changelog right before tagging the release
+
 
 <a name="v0.1.0"></a>
 ## [v0.1.0] - 2019-09-19
