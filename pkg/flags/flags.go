@@ -22,9 +22,8 @@ import (
 
 // GlobalFlags for the rostamctl command
 type GlobalFlags struct {
-	LogLevel      string
-	OutputColored bool
-	OutputFormat  string
+	LogLevel     string
+	OutputFormat string
 }
 
 // Normalize checks and normalizes input flags and falls back to default values when needed

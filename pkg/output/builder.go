@@ -18,15 +18,13 @@ package output
 // create a Formatter and use it to print the 'object'
 // to different formats and colors (based on the flags)
 type Builder struct {
-	format  string
-	colored bool
+	format string
 }
 
 // NewBuilder returns a new output.Builder with desired format and colored output
-func NewBuilder(format string, colored bool) *Builder {
+func NewBuilder(format string) *Builder {
 	return &Builder{
-		format:  format,
-		colored: colored,
+		format: format,
 	}
 }
 

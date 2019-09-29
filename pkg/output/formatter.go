@@ -50,9 +50,6 @@ func (f *Formatter) toJSON(object interface{}, builder *Builder) error {
 		return err
 	}
 	jsoned = pretty.Pretty(jsoned)
-	if builder.colored {
-		jsoned = pretty.Color(jsoned, nil)
-	}
 	_, err = fmt.Printf("%s", jsoned)
 	return err
 }
@@ -64,10 +61,6 @@ func (f *Formatter) toYAML(object interface{}, builder *Builder) error {
 	if err != nil {
 		return err
 	}
-	// TODO colorize yaml
-	// if builder.colored {
-	// yamled = Color(yamled, nil)
-	// }
 	_, err = fmt.Printf("%s", yamled)
 	return err
 }
