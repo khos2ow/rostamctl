@@ -45,13 +45,12 @@ func NewCommand() *cobra.Command {
 				return err
 			}
 			cli.GlobalFlags = flg
-			cli.OutputBuilder = output.NewBuilder(flg.OutputFormat, flg.OutputColored)
+			cli.OutputBuilder = output.NewBuilder(flg.OutputFormat)
 			return nil
 		},
 	}
 
-	cmd.PersistentFlags().StringVar(&flg.OutputFormat, "output-format", flags.DefaultOutputFormat, "output format "+output.FormatStrings())
-	cmd.PersistentFlags().BoolVar(&flg.OutputColored, "output-colored", false, "Enable or disable colored output")
+	cmd.PersistentFlags().StringVar(&flg.OutputFormat, "output", flags.DefaultOutputFormat, "output format "+output.FormatStrings())
 	cmd.PersistentFlags().StringVar(&flg.LogLevel, "loglevel", flags.DefaultLogLevel.String(), "log level "+logutil.LevelsString())
 
 	cmd.AddCommand(completion.NewCommand(cli))
