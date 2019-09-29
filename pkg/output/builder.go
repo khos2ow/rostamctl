@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package output contains helper utility to build and format the output
 package output
 
 // Builder is used to prepare the output. It internally

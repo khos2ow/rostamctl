@@ -12,16 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Package flags contains general utility of the rostamctl flags
 package flags
-
-import (
-	"github.com/sirupsen/logrus"
-)
-
-const (
-	// DefaultLogLevel is the default value if not provided with corresponding flag
-	DefaultLogLevel = logrus.WarnLevel
-
-	// DefaultOutputFormat is the default value if not provided with corresponding flag
-	DefaultOutputFormat = "json"
-)

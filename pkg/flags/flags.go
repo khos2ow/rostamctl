@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package flags contains general utility of the rostamctl flags
 package flags
 
 import (
