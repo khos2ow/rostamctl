@@ -1,4 +1,4 @@
-## CHANGELOG
+## Changelog
 
 {{ if .Versions -}}
 {{ if .Unreleased.CommitGroups -}}

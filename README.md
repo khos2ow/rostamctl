@@ -26,6 +26,8 @@ chmod +x ./rostamctl
 mv ./rostamctl /some-dir-in-your-PATH/rostamctl
 ```
 
+**NOTE:** Windows releases are compressed in `ZIP` format.
+
 ## Code Completion
 
 The code completion for `bash` or `zsh` can be installed using:
