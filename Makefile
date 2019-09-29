@@ -160,9 +160,10 @@ major: release ## Prepare Major release
 ####################
 .PHONY: changelog
 changelog: push ?= false
+changelog: next ?=
 changelog: ## Generate Changelog
 	@ $(MAKE) --no-print-directory log-$@
-	git-chglog --config ./scripts/chglog/config-full-history.yml --output CHANGELOG.md
+	git-chglog --config ./scripts/chglog/config-full-history.yml --output CHANGELOG.md $(next)
 	@ git add CHANGELOG.md
 	@ git commit -m "Update Changelog"
 	@ if $(push) = "true"; then git push origin master; fi

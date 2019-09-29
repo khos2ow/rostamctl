@@ -1,4 +1,4 @@
-# CHANGELOG
+# Changelog
 
 {{ if .Versions -}}
 <a name="unreleased"></a>
