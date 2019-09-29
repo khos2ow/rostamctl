@@ -48,7 +48,7 @@ GORUN       ?= GOOS=$(GOOS) GOARCH=$(GOARCH) $(GOCMD) run $(MODVENDOR)
 
 # Binary versions
 GITCHGLOG_VERSION := 0.8.0
-GOLANGCI_VERSION  := v1.17.1
+GOLANGCI_VERSION  := v1.18.0
 
 .PHONY: default
 default: help

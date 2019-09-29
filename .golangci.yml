@@ -5,37 +5,44 @@ run:
 linters:
   disable-all: true
   enable:
+    - dupl
+    - errcheck
     - govet
     - golint
     - goconst
-    - misspell
+    - gocyclo
     - lll
-    - varcheck
-    - structcheck
+    - maligned
+    - misspell
     - staticcheck
-    - errcheck
+    - structcheck
     - unconvert
     - unused
+    - varcheck
 
 linters-settings:
-  govet:
-    check-shadowing: true
-  golint:
-    min-confidence: 0
+  dupl:
+    threshold: 100
   goconst:
     min-len: 2
     min-occurrences: 2
-  misspell:
-    locale: US
+  gocyclo:
+    min-complexity: 15
+  golint:
+    min-confidence: 0
+  govet:
+    check-shadowing: true
   lll:
     line-length: 170
+  maligned:
+    suggest-new: true
+  misspell:
+    locale: US
   unused:
     check-exported: false
 
 issues:
-  exclude-rules:
-    - linters:
-        - golint
-      text: "should have a package comment"
-
   exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  new: true
