@@ -1,4 +1,4 @@
-# CHANGELOG
+# Changelog
 
 <a name="unreleased"></a>
 ## [Unreleased]
