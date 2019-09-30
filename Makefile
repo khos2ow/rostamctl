@@ -108,31 +108,18 @@ test: ## Run tests
 ###################
 .PHONY: build
 build: FULL_PATH ?= ./$(BUILD_DIR)/$(NAME)-$(VERSION)-$(GOOS)-$(GOARCH)
-build: compress  ?= false
 build: clean ## Build binary for current OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
 	$(GOBUILD) -o ./$(BUILD_DIR)/$(GOOS)-$(GOARCH)/$(NAME)
-	@ if [ $(compress) = "true" ]; then				\
-		./scripts/build/compress.sh "$(NAME)" "$(VERSION)" ;	\
-	fi
+	@ ./scripts/build/compress.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)"
 
 .PHONY: build-all
-build-all: GOOS      = linux darwin windows freebsd openbsd
-build-all: GOARCH    = amd64 arm
-build-all: compress ?= false
-build-all: clean ## Build binary for all OS/ARCH
+build-all: GOOS   = linux darwin windows freebsd openbsd
+build-all: GOARCH = amd64 arm
+build-all: clean ## Build binaries for all OS/ARCH
 	@ $(MAKE) --no-print-directory log-$@
-	@ CGO_ENABLED=0 gox -verbose					\
-		-ldflags $(GOLDFLAGS)					\
-		-gcflags=-trimpath=$(GOPATH)				\
-		-os="$(GOOS)"						\
-		-arch="$(GOARCH)"					\
-		-osarch="!darwin/arm"					\
-		-output="$(BUILD_DIR)/{{.OS}}-{{.Arch}}/{{.Dir}}" .
-
-	@ if [ $(compress) = "true" ]; then				\
-		./scripts/build/compress.sh "$(NAME)" "$(VERSION)" ;	\
-	fi
+	@ ./scripts/build/build-all.sh "$(BUILD_DIR)" "$(GOOS)" "$(GOARCH)" $(GOLDFLAGS)
+	@ ./scripts/build/compress.sh "$(BUILD_DIR)" "$(NAME)" "$(VERSION)"
 
 #####################
 ## Release targets ##

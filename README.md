@@ -22,7 +22,9 @@ Stable binaries are also available on the [releases](https://github.com/khos2ow/
 
 ```bash
 curl -Lo ./rostamctl https://github.com/khos2ow/rostamctl/releases/download/v0.2.0/rostamctl-$(uname)-amd64
+tar -xzf ./rostamctl.tar.gz
 chmod +x ./rostamctl
+rm ./rostamctl.tar.gz
 mv ./rostamctl /some-dir-in-your-PATH/rostamctl
 ```
 

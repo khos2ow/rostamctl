@@ -28,13 +28,13 @@ if [ -n "$(git status --short)" ]; then
     exit 1
 fi
 
-NEW_VERSION=$1
+RELEASE_VERSION=$1
 PUSH=$2
 CURRENT_VERSION=$3
-MAKEFILE=$4
+FROM_MAKEFILE=$4
 
-if [ -z "${NEW_VERSION}" ]; then
-    if [ -z "${MAKEFILE}" ]; then
+if [ -z "${RELEASE_VERSION}" ]; then
+    if [ -z "${FROM_MAKEFILE}" ]; then
         echo "Error: VERSION is missing. e.g. ./release.sh <version> <push>"
     else
         echo "Error: missing value for 'version'. e.g. 'make release version=x.y.z'"
@@ -51,13 +51,13 @@ if [ -z "${CURRENT_VERSION}" ]; then
     CURRENT_VERSION=$(git describe --tags --exact-match 2>/dev/null || git describe --tags 2>/dev/null || echo "v0.0.1-$(COMMIT_HASH)")
 fi
 
-if [ "v${NEW_VERSION}" = "${CURRENT_VERSION}" ]; then
-    echo "Error: provided version (v${NEW_VERSION}) already exists."
+if [ "v${RELEASE_VERSION}" = "${CURRENT_VERSION}" ]; then
+    echo "Error: provided version (v${RELEASE_VERSION}) already exists."
     exit 1
 fi
 
-if [ $(git describe --tags "v${NEW_VERSION}" 2>/dev/null) ]; then
-    echo "Error: provided version (v${NEW_VERSION}) already exists."
+if [ $(git describe --tags "v${RELEASE_VERSION}" 2>/dev/null) ]; then
+    echo "Error: provided version (v${RELEASE_VERSION}) already exists."
     exit 1
 fi
 
@@ -65,34 +65,34 @@ PWD=$(cd $(dirname "$0") && pwd -P)
 CLOSEST_VERSION=$(git describe --tags --abbrev=0)
 
 # Bump the released version in README and version.go
-sed -i -E 's|'${CLOSEST_VERSION}'|v'${NEW_VERSION}'|g' README.md
-sed -i -E 's|v'${NEW_VERSION}'-alpha|v'${NEW_VERSION}'|g' cmd/rostamctl/version/version.go
+sed -i -E 's|'${CLOSEST_VERSION}'|v'${RELEASE_VERSION}'|g' README.md
+sed -i -E 's|v'${RELEASE_VERSION}'-alpha|v'${RELEASE_VERSION}'|g' cmd/rostamctl/version/version.go
 
 # Commit changes
-printf "\033[36m==> %s\033[0m\n" "Commit changes for release version v${NEW_VERSION}"
+printf "\033[36m==> %s\033[0m\n" "Commit changes for release version v${RELEASE_VERSION}"
 git add README.md cmd/rostamctl/version/version.go
-git commit -m "Release version v${NEW_VERSION}"
+git commit -m "Release version v${RELEASE_VERSION}"
 
 if [ "${PUSH}" == "true" ]; then
-    printf "\033[36m==> %s\033[0m\n" "Push commits for v${NEW_VERSION}"
+    printf "\033[36m==> %s\033[0m\n" "Push commits for v${RELEASE_VERSION}"
     git push origin master
 fi
 
 # Generate Changelog
-make --no-print-directory -f ${PWD}/../../Makefile changelog push="${PUSH}" next="--next-tag v${NEW_VERSION}"
+make --no-print-directory -f ${PWD}/../../Makefile changelog push="${PUSH}" next="--next-tag v${RELEASE_VERSION}"
 
 # Tag the release
-printf "\033[36m==> %s\033[0m\n" "Tag release v${NEW_VERSION}"
-git tag --annotate --message "v${NEW_VERSION} Release" "v${NEW_VERSION}"
+printf "\033[36m==> %s\033[0m\n" "Tag release v${RELEASE_VERSION}"
+git tag --annotate --message "v${RELEASE_VERSION} Release" "v${RELEASE_VERSION}"
 
 if [ "${PUSH}" == "true" ]; then
-    printf "\033[36m==> %s\033[0m\n" "Push tag release v${NEW_VERSION}"
-    git push origin v${NEW_VERSION}
+    printf "\033[36m==> %s\033[0m\n" "Push tag release v${RELEASE_VERSION}"
+    git push origin v${RELEASE_VERSION}
 fi
 
 # Bump the next version in version.go
-NEXT_VERSION=$(echo "${NEW_VERSION}" | sed 's/^v//' | awk -F'[ .]' '{print $1"."$2+1".0"}')
-sed -i -E 's|v'${NEW_VERSION}'|v'${NEXT_VERSION}'-alpha|g' cmd/rostamctl/version/version.go
+NEXT_VERSION=$(echo "${RELEASE_VERSION}" | sed 's/^v//' | awk -F'[ .]' '{print $1"."$2+1".0"}')
+sed -i -E 's|v'${RELEASE_VERSION}'|v'${NEXT_VERSION}'-alpha|g' cmd/rostamctl/version/version.go
 
 # Commit changes
 printf "\033[36m==> %s\033[0m\n" "Bump version to v${NEXT_VERSION}-alpha"

@@ -18,8 +18,9 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-NAME=$1
-VERSION=$2
+BUILD_DIR="${1:-bin}"
+NAME="${2:-rostamctl}"
+VERSION=$3
 
 if [ -z "${NAME}" ]; then
     echo "Error: NAME is missing. e.g. ./compress.sh <name> <version>"
@@ -32,9 +33,9 @@ if [ -z "${VERSION}" ]; then
 fi
 
 PWD=$(cd $(dirname "$0") && pwd -P)
-BUILD_DIR="${PWD}/../../bin"
+BUILD_DIR="${PWD}/../../${BUILD_DIR}"
 
-printf "\033[36m==> Compress binary\033[0m\n"
+printf "\033[36m==> Compress binaries\033[0m\n"
 
 for platform in $(find ${BUILD_DIR} -mindepth 1 -maxdepth 1 -type d); do
     OSARCH=$(basename ${platform})
@@ -64,6 +65,8 @@ for platform in $(find ${BUILD_DIR} -mindepth 1 -maxdepth 1 -type d); do
     esac
 done
 
+printf "\033[36m==> Generate checksum\033[0m\n"
+
 cd ${BUILD_DIR}
 touch ${NAME}-${VERSION}.sha256sum
 
@@ -78,4 +81,4 @@ for binary in $(find . -mindepth 1 -maxdepth 1 -type f | grep -v "${NAME}-${VERS
 done
 
 cd - >/dev/null 2>&1
-printf -- "\n--> %15s: bin/%s\n" "sha256sum" "${NAME}-${VERSION}.sha256sum"
+printf -- "--> %15s: bin/%s\n" "sha256sum" "${NAME}-${VERSION}.sha256sum"
